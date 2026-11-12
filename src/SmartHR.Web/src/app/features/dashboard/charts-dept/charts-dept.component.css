@@ -1,0 +1,281 @@
+/* Department charts (Q1 + Q2 + Q3). Warm paper, hairlines, deep teal accent.
+   v3: 24px padding rhythm, one soft shadow per card, hairline rule under each
+   card header, 11px section labels, softer bar caps, tabular value labels.
+   No gradients, no shadows beyond the single soft one, no purple/blue,
+   no emojis. */
+
+.charts-dept-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.chart-card {
+  padding: 24px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e6e3db);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(25, 25, 25, 0.06);
+}
+
+/* Colour pass: solid coloured top border per card, rotating through the
+   muted palette. Chart bar colours themselves are unchanged. */
+.chart-card.accent-teal {
+  border-top: 3px solid #0e5e54;
+}
+
+.chart-card.accent-amber {
+  border-top: 3px solid #9a6a14;
+}
+
+.chart-card.accent-brick {
+  border-top: 3px solid #a83226;
+}
+
+.chart-card-wide {
+  grid-column: 1 / -1;
+}
+
+.chart-q {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #0e5e54);
+}
+
+/* Hairline rule under the header: label + title above, content below. */
+.chart-card h2 {
+  margin: 0 0 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border, #e6e3db);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.chart-sub {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #0e5e54);
+}
+
+/* Two charts side by side inside the Q2 card, divided by a hairline. */
+.duo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.duo-cell {
+  min-width: 0;
+}
+
+.duo-cell + .duo-cell {
+  border-left: 1px solid var(--border, #e6e3db);
+  padding-left: 20px;
+}
+
+/* Horizontal bars: label | track | value (Q1) or value + headcount (Q3). */
+.hbars {
+  margin: 4px 0 2px;
+}
+
+.hbar-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 190px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border, #e6e3db);
+}
+
+.hbar-row:last-child {
+  border-bottom: none;
+}
+
+.chart-card-wide .hbar-row {
+  grid-template-columns: minmax(160px, 220px) minmax(0, 1fr) auto auto;
+}
+
+.hbar-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2, #55524c);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hbar-track {
+  display: block;
+  height: 12px;
+  background: var(--surface-2, #f4f3ef);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.hbar-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent, #0e5e54);
+  border-radius: 6px;
+  transition: width 150ms ease;
+}
+
+.hbar-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink, #191919);
+  text-align: right;
+  min-width: 56px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hbar-count {
+  font-size: 12px;
+  color: var(--muted, #8a867d);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.takeaway {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border, #e6e3db);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2, #55524c);
+}
+
+.takeaway::before {
+  content: 'Takeaway';
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #8a867d);
+}
+
+.ai-area {
+  margin-top: 14px;
+}
+
+.btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent, #0e5e54);
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border-strong, #d4d0c6);
+  border-radius: 6px;
+  padding: 7px 12px;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: #eff5f3;
+  border-color: var(--accent, #0e5e54);
+}
+
+.btn:active:not(:disabled) {
+  background: #e3efec;
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent, #0e5e54);
+  outline-offset: 2px;
+}
+
+.ai-result {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--surface-2, #f4f3ef);
+  border: 1px solid var(--border, #e6e3db);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ai-result p {
+  margin: 0;
+}
+
+.ai-result p + p {
+  margin-top: 8px;
+}
+
+.ai-source {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #8a867d);
+}
+
+.ai-error {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--danger, #a83226);
+}
+
+.empty {
+  margin: 0;
+  padding: 16px;
+  background: var(--surface-2, #f4f3ef);
+  border: 1px dashed var(--border-strong, #d4d0c6);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--ink-2, #55524c);
+}
+
+@media (max-width: 960px) {
+  .charts-dept-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card-wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .duo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .duo-cell + .duo-cell {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border, #e6e3db);
+    padding-top: 16px;
+  }
+
+  .hbar-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 6px;
+  }
+
+  .hbar-label {
+    grid-column: 1 / -1;
+  }
+
+  .chart-card-wide .hbar-row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+}

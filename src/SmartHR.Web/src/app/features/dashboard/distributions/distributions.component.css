@@ -1,0 +1,216 @@
+/* Distributions (age bands, distance from home, job level).
+   v3: 24px padding rhythm, one soft shadow per card, hairline rule under each
+   card header, stronger section heading, polished loading/error/empty states.
+   No gradients, no purple/blue, no emojis. */
+
+.distributions {
+  color: var(--ink, #191919);
+}
+
+.section-head {
+  margin-bottom: 16px;
+}
+
+.section-label {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #0e5e54);
+}
+
+.section-head h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.section-sub {
+  margin: 0;
+  max-width: 72ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2, #55524c);
+}
+
+.loading {
+  padding: 16px;
+  background: var(--surface-2, #f4f3ef);
+  border: 1px dashed var(--border-strong, #d4d0c6);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--muted, #8a867d);
+}
+
+.error-banner {
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: #fbf3f1;
+  border: 1px solid #f0d9d4;
+  border-left: 3px solid var(--danger, #a83226);
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.dist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.chart-card {
+  padding: 24px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e6e3db);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(25, 25, 25, 0.06);
+}
+
+/* Colour pass: solid coloured top border per card, continuing the rotation
+   (amber, brick, slate). */
+.chart-card.accent-amber {
+  border-top: 3px solid #9a6a14;
+}
+
+.chart-card.accent-brick {
+  border-top: 3px solid #a83226;
+}
+
+.chart-card.accent-slate {
+  border-top: 3px solid #5b6b7a;
+}
+
+.chart-q {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #0e5e54);
+}
+
+/* Hairline rule under the header: label + title above, content below. */
+.chart-card h3 {
+  margin: 0 0 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border, #e6e3db);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.takeaway {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border, #e6e3db);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2, #55524c);
+}
+
+.takeaway::before {
+  content: 'Takeaway';
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #8a867d);
+}
+
+.empty {
+  margin: 0;
+  padding: 16px;
+  background: var(--surface-2, #f4f3ef);
+  border: 1px dashed var(--border-strong, #d4d0c6);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--ink-2, #55524c);
+}
+
+.ai-area {
+  margin-top: 14px;
+}
+
+.btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent, #0e5e54);
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border-strong, #d4d0c6);
+  border-radius: 6px;
+  padding: 7px 12px;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: #eff5f3;
+  border-color: var(--accent, #0e5e54);
+}
+
+.btn:active:not(:disabled) {
+  background: #e3efec;
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent, #0e5e54);
+  outline-offset: 2px;
+}
+
+.ai-result {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--surface-2, #f4f3ef);
+  border: 1px solid var(--border, #e6e3db);
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ai-result p {
+  margin: 0;
+}
+
+.ai-result p + p {
+  margin-top: 8px;
+}
+
+.ai-source {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #8a867d);
+}
+
+.ai-error {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--danger, #a83226);
+}
+
+@media (max-width: 1100px) {
+  .dist-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .dist-grid {
+    grid-template-columns: 1fr;
+  }
+}

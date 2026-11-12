@@ -1,0 +1,81 @@
+<div class="global-search">
+  <div class="search-box">
+    <svg
+      class="icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <line x1="16.5" y1="16.5" x2="21" y2="21" />
+    </svg>
+    <input
+      type="text"
+      role="combobox"
+      [formControl]="query"
+      placeholder="Search employees by number, role or department…"
+      aria-label="Search employees"
+      aria-controls="gs-list"
+      [attr.aria-expanded]="open"
+      [attr.aria-activedescendant]="activeIndex >= 0 ? 'gs-opt-' + activeIndex : null"
+      (focus)="onFocus()"
+      (keydown)="onKeydown($event)"
+    />
+    <button
+      *ngIf="query.value"
+      type="button"
+      class="clear"
+      (mousedown)="$event.preventDefault(); clear()"
+      aria-label="Clear search"
+    >
+      <svg
+        class="icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <div *ngIf="open" class="dropdown" id="gs-list" role="listbox" aria-label="Employee matches">
+    <div *ngIf="loading" class="dropdown-note">Searching…</div>
+    <div *ngIf="!loading && error" class="dropdown-note error">
+      Search is unavailable right now.
+    </div>
+    <div *ngIf="!loading && !error && hasQuery && results.length === 0" class="dropdown-note">
+      No matches for &ldquo;{{ query.value }}&rdquo;.
+    </div>
+    <button
+      *ngFor="let emp of results; let i = index"
+      type="button"
+      class="result"
+      [class.active]="i === activeIndex"
+      role="option"
+      [id]="'gs-opt-' + i"
+      [attr.aria-selected]="i === activeIndex"
+      (mousedown)="select(emp); $event.preventDefault()"
+    >
+      <span class="emp-no">#{{ emp.employeeNumber }}</span>
+      <span class="emp-main">
+        <span class="emp-role">{{ emp.jobRole }}</span>
+        <span class="emp-dept">{{ emp.department }}</span>
+      </span>
+      <app-badge [tone]="emp.attrition === 1 ? 'danger' : 'neutral'">{{
+        emp.attrition === 1 ? 'Left' : 'Stayed'
+      }}</app-badge>
+    </button>
+    <div *ngIf="!loading && !error && results.length > 0" class="dropdown-foot">
+      Showing {{ results.length }} of {{ total }} matches — press Enter to see all.
+    </div>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="drawer-root" *ngIf="isOpen">
+  <div class="drawer-backdrop" (click)="close()" aria-hidden="true"></div>
+
+  <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label="Employee details" (click)="$event.stopPropagation()">
+    <header class="drawer-header">
+      <div class="drawer-title">
+        <p class="section-label">Employee</p>
+        <h2 class="drawer-heading">#{{ employeeNumber }}</h2>
+        <p class="drawer-subtitle" *ngIf="detail">
+          {{ detail.department }} &middot; {{ detail.jobRole }}
+        </p>
+        <p class="drawer-subtitle" *ngIf="!detail && !loading">Loading profile&hellip;</p>
+      </div>
+      <div class="drawer-header-side">
+        <app-badge class="attrition-badge" *ngIf="detail && detail.attrition === 1" tone="danger">Left</app-badge>
+        <app-badge class="attrition-badge" *ngIf="detail && detail.attrition === 0" tone="ok">Stayed</app-badge>
+        <button
+          #closeButton
+          type="button"
+          class="drawer-close"
+          (click)="close()"
+          aria-label="Close employee details"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="drawer-body">
+      <!-- Loading state -->
+      <div class="drawer-loading" *ngIf="loading">
+        <app-skeleton></app-skeleton>
+        <app-skeleton></app-skeleton>
+        <app-skeleton></app-skeleton>
+        <p class="loading-text">Loading profile&hellip;</p>
+      </div>
+
+      <!-- Error state -->
+      <app-error-banner *ngIf="!loading && error" [message]="error"></app-error-banner>
+      <button type="button" class="btn" *ngIf="!loading && error" (click)="retry()">Try again</button>
+
+      <!-- Full profile -->
+      <ng-container *ngIf="!loading && detail">
+        <section class="drawer-section" aria-label="Identity">
+          <h3 class="section-label">Identity</h3>
+          <dl class="field-list">
+            <div class="field-row"><dt>Age</dt><dd>{{ detail.age }}</dd></div>
+            <div class="field-row"><dt>Gender</dt><dd>{{ detail.gender }}</dd></div>
+            <div class="field-row"><dt>Marital status</dt><dd>{{ detail.maritalStatus }}</dd></div>
+            <div class="field-row"><dt>Education</dt><dd>Level {{ detail.education }} of 5</dd></div>
+            <div class="field-row"><dt>Education field</dt><dd>{{ detail.educationField }}</dd></div>
+            <div class="field-row"><dt>Business travel</dt><dd>{{ prettify(detail.businessTravel) }}</dd></div>
+            <div class="field-row"><dt>Distance from home</dt><dd>{{ detail.distanceFromHome }} miles</dd></div>
+          </dl>
+        </section>
+
+        <section class="drawer-section" aria-label="Pay">
+          <h3 class="section-label">Pay</h3>
+          <dl class="field-list">
+            <div class="field-row field-row--primary"><dt>Monthly income</dt><dd>${{ detail.monthlyIncome | number }}</dd></div>
+            <div class="field-row"><dt>Daily rate</dt><dd>${{ detail.dailyRate | number }}</dd></div>
+            <div class="field-row"><dt>Hourly rate</dt><dd>${{ detail.hourlyRate | number }}</dd></div>
+            <div class="field-row"><dt>Monthly rate</dt><dd>${{ detail.monthlyRate | number }}</dd></div>
+            <div class="field-row"><dt>Salary hike</dt><dd>{{ detail.percentSalaryHike }}%</dd></div>
+            <div class="field-row"><dt>Stock option level</dt><dd>{{ detail.stockOptionLevel }}</dd></div>
+            <div class="field-row"><dt>Job level</dt><dd>Level {{ detail.jobLevel }} of 5</dd></div>
+            <div class="field-row"><dt>Overtime</dt><dd>{{ detail.overTime === 1 ? 'Yes' : 'No' }}</dd></div>
+            <div class="field-row"><dt>Income band</dt><dd>{{ detail.incomeBand }}</dd></div>
+          </dl>
+        </section>
+
+        <section class="drawer-section" aria-label="Tenure">
+          <h3 class="section-label">Tenure</h3>
+          <dl class="field-list">
+            <div class="field-row"><dt>Years at company</dt><dd>{{ detail.yearsAtCompany }}</dd></div>
+            <div class="field-row"><dt>Years in current role</dt><dd>{{ detail.yearsInCurrentRole }}</dd></div>
+            <div class="field-row"><dt>Years since promotion</dt><dd>{{ detail.yearsSinceLastPromotion }}</dd></div>
+            <div class="field-row"><dt>Years with manager</dt><dd>{{ detail.yearsWithCurrManager }}</dd></div>
+            <div class="field-row"><dt>Total working years</dt><dd>{{ detail.totalWorkingYears }}</dd></div>
+            <div class="field-row"><dt>Companies worked</dt><dd>{{ detail.numCompaniesWorked }}</dd></div>
+            <div class="field-row"><dt>Training last year</dt><dd>{{ detail.trainingTimesLastYear }} times</dd></div>
+            <div class="field-row"><dt>Tenure band</dt><dd>{{ detail.tenureBand }}</dd></div>
+          </dl>
+        </section>
+
+        <section class="drawer-section" aria-label="Satisfaction">
+          <h3 class="section-label">Satisfaction</h3>
+          <dl class="field-list">
+            <div class="field-row meter-row">
+              <dt>Job satisfaction</dt>
+              <dd>
+                <span class="meter-value">{{ detail.jobSatisfaction }} of 4</span>
+                <span class="meter" aria-hidden="true"><span class="meter-fill" [style.width.%]="meterWidth(detail.jobSatisfaction)"></span></span>
+              </dd>
+            </div>
+            <div class="field-row meter-row">
+              <dt>Environment satisfaction</dt>
+              <dd>
+                <span class="meter-value">{{ detail.environmentSatisfaction }} of 4</span>
+                <span class="meter" aria-hidden="true"><span class="meter-fill" [style.width.%]="meterWidth(detail.environmentSatisfaction)"></span></span>
+              </dd>
+            </div>
+            <div class="field-row meter-row">
+              <dt>Relationship satisfaction</dt>
+              <dd>
+                <span class="meter-value">{{ detail.relationshipSatisfaction }} of 4</span>
+                <span class="meter" aria-hidden="true"><span class="meter-fill" [style.width.%]="meterWidth(detail.relationshipSatisfaction)"></span></span>
+              </dd>
+            </div>
+            <div class="field-row meter-row">
+              <dt>Work-life balance</dt>
+              <dd>
+                <span class="meter-value">{{ detail.workLifeBalance }} of 4</span>
+                <span class="meter" aria-hidden="true"><span class="meter-fill" [style.width.%]="meterWidth(detail.workLifeBalance)"></span></span>
+              </dd>
+            </div>
+            <div class="field-row"><dt>Satisfaction score</dt><dd>{{ detail.satisfactionScore | number: '1.2-2' }} of 4</dd></div>
+            <div class="field-row"><dt>Job involvement</dt><dd>{{ detail.jobInvolvement }} of 4</dd></div>
+            <div class="field-row"><dt>Performance rating</dt><dd>{{ detail.performanceRating }} of 4</dd></div>
+          </dl>
+        </section>
+
+        <p class="drawer-footnote">Source: IBM HR Analytics sample data. Attrition is recorded as {{ detail.attrition === 1 ? 'left' : 'stayed' }}.</p>
+      </ng-container>
+    </div>
+  </aside>
+</div>

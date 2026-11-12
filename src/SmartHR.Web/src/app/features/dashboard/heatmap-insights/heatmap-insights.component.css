@@ -1,0 +1,226 @@
+/* Heatmap + key findings.
+   v3: 24px padding rhythm, one soft shadow per card, hairline rule under each
+   card header, refined severity pills, hover states on findings, polished
+   loading/error/empty states. No gradients, no purple/blue, no emojis. */
+
+.heatmap-insights {
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e6e3db);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(25, 25, 25, 0.06);
+  padding: 24px;
+}
+
+/* Colour pass: solid coloured top border per card (heatmap = dark teal,
+   findings = teal). The heatmap's own legend inside app-heatmap is kept —
+   the duplicate legend that lived here was removed. */
+.card.accent-darkteal {
+  border-top: 3px solid #0a463e;
+}
+
+.card.accent-teal {
+  border-top: 3px solid #0e5e54;
+}
+
+.section-label {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #0e5e54);
+}
+
+/* Hairline rule under the header: label + title above, sub-text below. */
+.card h3 {
+  margin: 0 0 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border, #e6e3db);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink, #191919);
+}
+
+.card-sub {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2, #55524c);
+}
+
+.heatmap-wrap {
+  overflow-x: auto;
+}
+
+.takeaway {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border, #e6e3db);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2, #55524c);
+  font-variant-numeric: tabular-nums;
+}
+
+.takeaway::before {
+  content: 'Takeaway';
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #8a867d);
+}
+
+.findings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.finding {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin: 0 -8px;
+  padding: 14px 8px;
+  border-radius: 8px;
+  transition: background-color 150ms ease;
+}
+
+.finding:hover {
+  background: #fbfaf7;
+}
+
+.finding + .finding {
+  border-top: 1px solid var(--border, #e6e3db);
+}
+
+.severity {
+  flex: none;
+  margin-top: 2px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.severity-high {
+  background: #fbedea;
+  border-color: #ecc9c3;
+  color: #a83226;
+}
+
+.severity-medium {
+  background: #f7f0dd;
+  border-color: #e8d9b0;
+  color: #9a6a14;
+}
+
+.severity-low {
+  background: #edf3f1;
+  border-color: #cfe0da;
+  color: #0e5e54;
+}
+
+.finding-body {
+  min-width: 0;
+}
+
+.finding-title {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink, #191919);
+}
+
+.finding-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2, #55524c);
+  font-variant-numeric: tabular-nums;
+}
+
+.finding-source {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted, #8a867d);
+}
+
+.state-text {
+  padding: 16px;
+  background: var(--surface-2, #f4f3ef);
+  border: 1px dashed var(--border-strong, #d4d0c6);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted, #8a867d);
+}
+
+.empty-text {
+  margin: 12px 0 0;
+  padding: 16px;
+  background: var(--surface-2, #f4f3ef);
+  border: 1px dashed var(--border-strong, #d4d0c6);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted, #8a867d);
+}
+
+.error-banner {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e6e3db);
+  border-left: 3px solid var(--danger, #a83226);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(25, 25, 25, 0.06);
+  padding: 16px 20px;
+}
+
+.error-banner p {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-2, #55524c);
+}
+
+.btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong, #d4d0c6);
+  background: var(--surface, #ffffff);
+  color: var(--ink, #191919);
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.btn:hover {
+  border-color: var(--accent, #0e5e54);
+  color: var(--accent-ink, #0a453e);
+  background: #eff5f3;
+}
+
+.btn:active {
+  background: #e3efec;
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent, #0e5e54);
+  outline-offset: 2px;
+}

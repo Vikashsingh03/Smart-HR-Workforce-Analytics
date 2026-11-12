@@ -1,0 +1,96 @@
+<section class="filters card" aria-label="Employee filters">
+  <form [formGroup]="form" (ngSubmit)="$event.preventDefault()">
+    <div class="fields">
+      <label class="field field-search">
+        <span class="section-label">Search</span>
+        <span class="search-wrap">
+          <svg
+            class="search-icon"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <line x1="16.5" y1="16.5" x2="21" y2="21" />
+          </svg>
+          <input
+            class="input"
+            type="search"
+            formControlName="search"
+            placeholder="Employee number, role or department"
+            aria-label="Search employees"
+          />
+        </span>
+      </label>
+
+      <label class="field">
+        <span class="section-label">Department</span>
+        <select class="input" formControlName="department" aria-label="Department">
+          <option value="">All departments</option>
+          <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="section-label">Job role</span>
+        <select class="input" formControlName="role" aria-label="Job role">
+          <option value="">All roles</option>
+          <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="section-label">Attrition</span>
+        <select class="input" formControlName="attrition" aria-label="Attrition">
+          <option *ngFor="let o of attritionOptions" [value]="o.value">{{ o.label }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="section-label">Monthly income</span>
+        <select class="input" formControlName="incomeBand" aria-label="Monthly income band">
+          <option *ngFor="let b of incomeBands" [value]="b.value">{{ b.label }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="section-label">Tenure</span>
+        <select class="input" formControlName="tenureBand" aria-label="Tenure band">
+          <option *ngFor="let b of tenureBands" [value]="b.value">{{ b.label }}</option>
+        </select>
+      </label>
+    </div>
+
+    <p class="options-note" *ngIf="optionsFailed">
+      Department and role lists could not be loaded. Search and the other filters still work.
+    </p>
+
+    <div class="actions">
+      <span class="active-count" *ngIf="activeFilterCount > 0">
+        {{ activeFilterCount }} filter{{ activeFilterCount === 1 ? '' : 's' }} active
+      </span>
+      <span class="actions-spacer"></span>
+      <button
+        type="button"
+        class="btn"
+        (click)="clearFilters()"
+        [disabled]="activeFilterCount === 0"
+      >
+        Clear filters
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="requestExport()"
+        [disabled]="exportDisabled"
+      >
+        Export CSV
+      </button>
+    </div>
+  </form>
+</section>

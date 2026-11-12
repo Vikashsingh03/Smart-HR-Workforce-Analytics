@@ -1,0 +1,40 @@
+<div class="heatmap-wrap" *ngIf="rows && rows.length > 0; else emptyState">
+  <table class="heatmap" aria-label="Attrition rate by department and job role">
+    <thead>
+      <tr>
+        <th scope="col" class="corner">Department \ Role</th>
+        <th scope="col" *ngFor="let role of roles">{{ role }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let department of departments">
+        <th scope="row" class="row-label">{{ department }}</th>
+        <td
+          *ngFor="let role of roles"
+          class="cell"
+          [ngStyle]="cellStyle(cell(department, role))"
+          [title]="cellTitle(cell(department, role))"
+        >
+          <span class="cell-rate">{{ cellRate(cell(department, role)) }}</span>
+          <span class="cell-total" *ngIf="cell(department, role)">{{
+            cellTotal(cell(department, role))
+          }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="legend" aria-label="Colour scale: attrition rate">
+    <span class="legend-label">Attrition rate</span>
+    <span class="legend-item" *ngFor="let step of legendSteps">
+      <span
+        class="legend-swatch"
+        [style.background]="step.background"
+        [style.border-color]="step.background === '#F4F3EF' ? '#D4D0C6' : step.background"
+      ></span>
+      <span class="legend-text">{{ step.label }}</span>
+    </span>
+  </div>
+</div>
+<ng-template #emptyState>
+  <p class="empty">No matrix data was returned.</p>
+</ng-template>

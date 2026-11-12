@@ -1,0 +1,174 @@
+.global-search {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.search-box:hover {
+  border-color: var(--border-strong);
+}
+
+.search-box:focus-within {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(14, 94, 84, 0.18), 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 0 8px 8px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.search-box input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+
+/* Magnifier icon: teal at rest, deeper teal while the box is focused. */
+.search-box > svg.icon {
+  color: var(--accent);
+}
+
+.search-box:focus-within > svg.icon {
+  color: var(--accent-ink);
+}
+
+.clear {
+  display: flex;
+  flex: none;
+  padding: 2px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.clear:hover {
+  color: var(--ink);
+}
+
+.clear:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-note {
+  padding: 14px;
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dropdown-note.error {
+  color: var(--danger);
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: none;
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.result:hover {
+  background: var(--surface-2);
+}
+
+.result.active {
+  background: var(--accent-soft, rgba(14, 94, 84, 0.08));
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.result:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.emp-no {
+  flex: none;
+  min-width: 52px;
+  color: var(--ink-2);
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.emp-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.emp-role {
+  overflow: hidden;
+  color: var(--ink);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emp-dept {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.dropdown-foot {
+  padding: 9px 12px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.5;
+}

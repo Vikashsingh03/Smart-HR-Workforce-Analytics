@@ -1,0 +1,69 @@
+<section class="distributions">
+  <div class="section-head">
+    <p class="section-label">Distributions</p>
+    <h2>Who leaves: age, distance and level</h2>
+    <p class="section-sub">
+      Attrition rate by age band, distance from home and job level — each from
+      the live data, so HR can see which groups of people are most at risk.
+    </p>
+  </div>
+
+  @if (loading) {
+    <p class="loading">Loading…</p>
+  }
+
+  @if (error) {
+    <div class="error-banner" role="alert">{{ error }}</div>
+  }
+
+  @if (!loading && !error) {
+    <div class="dist-grid">
+      @for (chart of charts; track chart.id) {
+        <article
+          class="chart-card"
+          [class.accent-amber]="$index === 0"
+          [class.accent-brick]="$index === 1"
+          [class.accent-slate]="$index === 2"
+        >
+          <p class="chart-q">{{ chart.eyebrow }}</p>
+          <h3>{{ chart.title }}</h3>
+          @if (chart.labels.length) {
+            <app-base-chart
+              type="bar"
+              [labels]="chart.labels"
+              [datasets]="chart.datasets"
+              [height]="240"
+            ></app-base-chart>
+          } @else {
+            <p class="empty">No data was returned for this chart.</p>
+          }
+          <p class="takeaway">{{ chart.takeaway }}</p>
+          <div class="ai-area">
+            <button
+              class="btn"
+              type="button"
+              (click)="explain(chart)"
+              [disabled]="aiState(chart.id).loading"
+            >
+              {{ aiState(chart.id).loading ? 'Explaining…' : 'Explain with AI' }}
+            </button>
+            @if (aiState(chart.id).result; as result) {
+              <div class="ai-result">
+                <p class="ai-source">
+                  {{ result.source === 'gemini' ? 'AI explanation' : 'Rule-based summary' }}
+                </p>
+                <p>{{ result.explanation }}</p>
+                <p class="ai-action">
+                  <strong>Suggested action:</strong> {{ result.action }}
+                </p>
+              </div>
+            }
+            @if (aiState(chart.id).error) {
+              <p class="ai-error">{{ aiState(chart.id).error }}</p>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

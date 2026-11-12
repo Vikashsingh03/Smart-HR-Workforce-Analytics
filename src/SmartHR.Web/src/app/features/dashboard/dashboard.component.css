@@ -1,0 +1,96 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Colour pass (user correction, 12 Nov): solid deep-teal header band with
+   white text — the dashboard is colourful, not white-white. No gradients.
+   v3: stronger display title, tighter tracking, 24px padding rhythm, one
+   soft shadow on the band. */
+
+.page-intro {
+  background: #0e5e54;
+  border-radius: 8px;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.page-intro .section-label {
+  color: #cfe3de;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.page-intro h1 {
+  margin: 8px 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.page-intro-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.section-label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.dash-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Hairline rule separating the executive summary section from the KPI row
+   above it (the strip itself carries the matching rule below). */
+.dash-section[aria-labelledby="exec-summary-heading"] {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+}
+
+/* Consistent section headers: eyebrow label + heading, closed by a
+   hairline rule. */
+.section-head {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-head h2 {
+  margin: 6px 0 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    gap: 24px;
+  }
+
+  .page-intro {
+    padding: 24px 20px;
+  }
+
+  .page-intro h1 {
+    font-size: 26px;
+  }
+
+  .section-head h2 {
+    font-size: 19px;
+  }
+}

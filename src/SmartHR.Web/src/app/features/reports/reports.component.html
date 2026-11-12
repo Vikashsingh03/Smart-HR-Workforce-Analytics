@@ -1,0 +1,47 @@
+<app-page-header
+  title="Reports"
+  subtitle="One downloadable report per question — every figure comes from the live database."
+></app-page-header>
+
+<p class="loading" *ngIf="loading">Loading reports…</p>
+
+<div class="error-banner" *ngIf="!loading && error" role="alert">
+  <p>{{ error }}</p>
+  <button class="btn" type="button" (click)="reload()">Try again</button>
+</div>
+
+<div class="report-grid" *ngIf="!loading && !error">
+  <article class="report-card" *ngFor="let card of cards">
+    <p class="question-label">{{ card.question }}</p>
+    <h2>{{ card.title }}</h2>
+    <p class="answer">{{ card.answer }}</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th
+            *ngFor="let header of card.headers; let i = index"
+            [class.num]="isNumericCell(card, i)"
+          >
+            {{ header }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of card.rows">
+          <td
+            *ngFor="let cell of row; let i = index"
+            [class.num]="isNumericCell(card, i)"
+          >
+            {{ formatCell(card.headers[i], cell) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="card-actions">
+      <button class="btn btn-download" type="button" (click)="download(card)">
+        Download CSV
+      </button>
+      <span class="row-count">{{ card.rows.length }} rows</span>
+    </div>
+  </article>
+</div>

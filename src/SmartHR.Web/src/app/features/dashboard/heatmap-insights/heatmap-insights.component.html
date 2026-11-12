@@ -1,0 +1,42 @@
+<section class="heatmap-insights" aria-label="Attrition heatmap and key findings">
+  <p class="state-text" *ngIf="loading">Loading insights…</p>
+
+  <div class="error-banner" *ngIf="!loading && error" role="alert">
+    <p>Could not load the insights. {{ error }}</p>
+    <button type="button" class="btn" (click)="reload()">Try again</button>
+  </div>
+
+  <div class="card heatmap-card accent-darkteal" *ngIf="!loading && !error">
+    <p class="section-label">Heatmap</p>
+    <h3>Attrition by department and role</h3>
+    <p class="card-sub">
+      Each cell is one department and role combination, coloured by its
+      attrition rate. Darker cells are the combinations losing people fastest.
+    </p>
+    <div class="heatmap-wrap">
+      <app-heatmap [rows]="matrix"></app-heatmap>
+    </div>
+    <p class="empty-text" *ngIf="matrix.length === 0">
+      No department and role combinations were returned.
+    </p>
+    <p class="takeaway" *ngIf="hottestCellText">{{ hottestCellText }}</p>
+  </div>
+
+  <div class="card findings-card accent-teal" *ngIf="!loading && !error">
+    <p class="section-label">Key findings</p>
+    <h3>What the data says</h3>
+    <ol class="findings">
+      <li class="finding" *ngFor="let finding of findings">
+        <span class="severity severity-{{ finding.severity }}">{{ finding.severity }}</span>
+        <div class="finding-body">
+          <p class="finding-title">{{ finding.title }}</p>
+          <p class="finding-text">{{ finding.text }}</p>
+          <p class="finding-source">Source: {{ finding.source }}</p>
+        </div>
+      </li>
+    </ol>
+    <p class="empty-text" *ngIf="findings.length === 0">
+      No findings could be computed from the data returned.
+    </p>
+  </div>
+</section>

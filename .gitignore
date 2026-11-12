@@ -1,0 +1,16 @@
+# .NET build outputs
+bin/
+obj/
+*.user
+.vs/
+# Angular / Node
+node_modules/
+dist/
+.angular/
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
+# Local runtime files
+*.db-journal
+*.log

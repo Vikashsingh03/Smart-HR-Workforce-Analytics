@@ -1,0 +1,121 @@
+<div class="action-table">
+  <div class="table-toolbar">
+    <label class="filter-label" for="action-dept-filter">Department</label>
+    <select
+      id="action-dept-filter"
+      class="select"
+      (change)="onDepartmentChange($event)"
+    >
+      <option value="all" [selected]="selectedDepartment === 'all'">
+        All departments
+      </option>
+      <option
+        *ngFor="let dept of departments"
+        [value]="dept"
+        [selected]="selectedDepartment === dept"
+      >
+        {{ dept }}
+      </option>
+    </select>
+    <span class="result-count" *ngIf="!loading && !error">
+      Showing {{ filteredRows.length }} of {{ rows.length }} groups
+    </span>
+  </div>
+
+  <div class="why-box" *ngIf="!loading && !error && topReasons.length > 0">
+    <p class="why-label">Why it matters</p>
+    <ol class="why-list">
+      <li *ngFor="let reason of topReasons">{{ reason }}</li>
+    </ol>
+  </div>
+
+  <app-skeleton *ngIf="loading" [lines]="5"></app-skeleton>
+
+  <app-error-banner
+    *ngIf="!loading && error"
+    [message]="error"
+  ></app-error-banner>
+  <button
+    *ngIf="!loading && error"
+    class="btn"
+    type="button"
+    (click)="load()"
+  >
+    Try again
+  </button>
+
+  <app-empty-state
+    *ngIf="!loading && !error && filteredRows.length === 0"
+    message="No groups match this department filter."
+    actionLabel="Clear filter"
+    (actionClick)="clearFilter()"
+  ></app-empty-state>
+
+  <div
+    class="table-wrap"
+    *ngIf="!loading && !error && filteredRows.length > 0"
+  >
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col" [attr.aria-sort]="sortKey === 'department' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button type="button" class="th-btn" (click)="sortBy('department')">
+              Department
+              <span *ngIf="sortKey === 'department'" class="sort-mark">{{
+                sortDir === 'asc' ? '▲' : '▼'
+              }}</span>
+            </button>
+          </th>
+          <th scope="col" [attr.aria-sort]="sortKey === 'jobRole' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button type="button" class="th-btn" (click)="sortBy('jobRole')">
+              Job role
+              <span *ngIf="sortKey === 'jobRole'" class="sort-mark">{{
+                sortDir === 'asc' ? '▲' : '▼'
+              }}</span>
+            </button>
+          </th>
+          <th scope="col" class="num" [attr.aria-sort]="sortKey === 'total' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button type="button" class="th-btn num" (click)="sortBy('total')">
+              Headcount
+              <span *ngIf="sortKey === 'total'" class="sort-mark">{{
+                sortDir === 'asc' ? '▲' : '▼'
+              }}</span>
+            </button>
+          </th>
+          <th scope="col" class="num" [attr.aria-sort]="sortKey === 'left' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button type="button" class="th-btn num" (click)="sortBy('left')">
+              Left
+              <span *ngIf="sortKey === 'left'" class="sort-mark">{{
+                sortDir === 'asc' ? '▲' : '▼'
+              }}</span>
+            </button>
+          </th>
+          <th scope="col" class="num" [attr.aria-sort]="sortKey === 'rate' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button type="button" class="th-btn num" (click)="sortBy('rate')">
+              Attrition rate
+              <span *ngIf="sortKey === 'rate'" class="sort-mark">{{
+                sortDir === 'asc' ? '▲' : '▼'
+              }}</span>
+            </button>
+          </th>
+          <th scope="col"><span class="th-text">Severity</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of filteredRows">
+          <td>{{ row.department }}</td>
+          <td>{{ row.jobRole }}</td>
+          <td class="num">{{ formatInt(row.total) }}</td>
+          <td class="num">{{ formatInt(row.left) }}</td>
+          <td class="num rate">{{ formatRate(row.rate) }}</td>
+          <td class="severity-cell">
+            <app-badge
+              [text]="severity(row).label"
+              [tone]="severity(row).tone"
+            ></app-badge>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

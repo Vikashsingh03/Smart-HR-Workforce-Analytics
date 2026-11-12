@@ -1,0 +1,245 @@
+/* Q7 action table: premium table treatment — uppercase micro headers,
+   hairline row separators, hover states, right-aligned tabular numerals,
+   refined department filter select, clearer "Why it matters" box.
+   v3: softer card chrome, warm tinted sticky header, 150ms transitions.
+   No gradients, no purple/blue, no emojis. */
+
+.action-table {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filter-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #8a867d);
+}
+
+/* Refined select: custom chevron, taller hit area, teal focus ring
+   with a soft focus shadow. */
+.select {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink, #191919);
+  background-color: var(--surface, #ffffff);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%2355524c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  appearance: none;
+  border: 1px solid var(--border-strong, #d4d0c6);
+  border-radius: 8px;
+  padding: 8px 34px 8px 12px;
+  min-width: 200px;
+  min-height: 38px;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.select:hover {
+  border-color: var(--accent, #0e5e54);
+}
+
+.select:focus-visible {
+  outline: none;
+  border-color: var(--accent, #0e5e54);
+  box-shadow: 0 0 0 3px rgba(14, 94, 84, 0.15);
+}
+
+.result-count {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted, #8a867d);
+  font-variant-numeric: tabular-nums;
+}
+
+.why-box {
+  background: var(--surface-2, #f4f3ef);
+  border: 1px solid var(--border, #e6e3db);
+  border-left: 3px solid var(--accent, #0e5e54);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.why-label {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent, #0e5e54);
+}
+
+.why-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2, #55524c);
+  font-variant-numeric: tabular-nums;
+}
+
+.why-list li::marker {
+  color: var(--accent, #0e5e54);
+  font-weight: 700;
+}
+
+.btn {
+  align-self: flex-start;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent, #0e5e54);
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border-strong, #d4d0c6);
+  border-radius: 6px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease;
+}
+
+.btn:hover {
+  background: var(--accent-soft, #eff5f3);
+  border-color: var(--accent, #0e5e54);
+}
+
+.btn:active {
+  background: #e3efec;
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent, #0e5e54);
+  outline-offset: 2px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border, #e6e3db);
+  border-top: 3px solid #a83226;
+  border-radius: 10px;
+  background: var(--surface, #ffffff);
+  box-shadow: 0 4px 16px rgba(25, 25, 25, 0.06);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.data-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fbfaf7;
+  border-bottom: 1px solid var(--border-strong, #d4d0c6);
+  padding: 0;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted, #8a867d);
+  white-space: nowrap;
+}
+
+.data-table thead th.num {
+  text-align: right;
+}
+
+.data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border, #e6e3db);
+  color: var(--ink, #191919);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr {
+  transition: background-color 150ms ease;
+}
+
+.data-table tbody tr:hover {
+  background: var(--surface-2, #f4f3ef);
+}
+
+.data-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table td.rate {
+  font-weight: 700;
+  color: var(--danger, #a83226);
+}
+
+/* Severity pill cell: keep the badge on one line. The pill itself is
+   rendered by app-badge (owned by the shared-UI builder). */
+.data-table td.severity-cell {
+  white-space: nowrap;
+}
+
+.th-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.th-text {
+  display: inline-block;
+  padding: 12px 14px;
+}
+
+.th-btn:hover {
+  color: var(--accent, #0e5e54);
+}
+
+.th-btn:focus-visible {
+  outline: 2px solid var(--accent, #0e5e54);
+  outline-offset: -2px;
+}
+
+.sort-mark {
+  font-size: 10px;
+  color: var(--accent, #0e5e54);
+}
+
+@media (max-width: 768px) {
+  .result-count {
+    margin-left: 0;
+    width: 100%;
+  }
+}

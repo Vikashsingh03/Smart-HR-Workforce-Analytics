@@ -1,0 +1,54 @@
+@if (loading) {
+  <p class="loading">Loading…</p>
+}
+
+@if (error) {
+  <div class="error-banner" role="alert">{{ error }}</div>
+}
+
+@if (!loading && !error) {
+  <div class="charts-grid">
+    @for (chart of charts; track chart.id) {
+      <article
+        class="chart-card"
+        [class.accent-slate]="$index === 0"
+        [class.accent-darkteal]="$index === 1"
+        [class.accent-teal]="$index === 2"
+      >
+        <p class="chart-q">{{ chart.question }}</p>
+        <h2>{{ chart.title }}</h2>
+        <app-base-chart
+          [type]="chart.type"
+          [labels]="chart.labels"
+          [datasets]="chart.datasets"
+          [height]="240"
+        ></app-base-chart>
+        <p class="takeaway">{{ chart.takeaway }}</p>
+        <div class="ai-area">
+          <button
+            class="btn"
+            type="button"
+            (click)="explain(chart)"
+            [disabled]="aiState(chart.id).loading"
+          >
+            {{ aiState(chart.id).loading ? 'Explaining…' : 'Explain with AI' }}
+          </button>
+          @if (aiState(chart.id).result; as result) {
+            <div class="ai-result">
+              <p class="ai-source">
+                {{ result.source === 'gemini' ? 'AI explanation' : 'Rule-based summary' }}
+              </p>
+              <p>{{ result.explanation }}</p>
+              <p class="ai-action">
+                <strong>Suggested action:</strong> {{ result.action }}
+              </p>
+            </div>
+          }
+          @if (aiState(chart.id).error) {
+            <p class="ai-error">{{ aiState(chart.id).error }}</p>
+          }
+        </div>
+      </article>
+    }
+  </div>
+}

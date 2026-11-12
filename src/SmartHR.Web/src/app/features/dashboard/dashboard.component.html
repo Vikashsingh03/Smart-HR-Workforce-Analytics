@@ -1,0 +1,60 @@
+<div class="dashboard">
+  <header class="page-intro">
+    <p class="section-label">Workforce overview</p>
+    <h1>Attrition at a glance</h1>
+    <p class="page-intro-text">
+      Attrition across the workforce — where it concentrates, what drives it,
+      and where HR should act first.
+    </p>
+  </header>
+
+  <app-kpi-row></app-kpi-row>
+
+  <section class="dash-section" aria-labelledby="exec-summary-heading">
+    <div class="section-head">
+      <p class="section-label" id="exec-summary-heading">Executive summary</p>
+      <h2>The story in four sentences</h2>
+    </div>
+    <app-executive-summary></app-executive-summary>
+  </section>
+
+  <section class="dash-section" aria-labelledby="dept-heading">
+    <div class="section-head">
+      <p class="section-label" id="dept-heading">Departments</p>
+      <h2>Where attrition concentrates</h2>
+    </div>
+    <app-charts-dept></app-charts-dept>
+  </section>
+
+  <section class="dash-section" aria-labelledby="drivers-heading">
+    <div class="section-head">
+      <p class="section-label" id="drivers-heading">Drivers</p>
+      <h2>What drives people out</h2>
+    </div>
+    <app-charts-drivers></app-charts-drivers>
+  </section>
+
+  <section class="dash-section" aria-labelledby="heatmap-heading">
+    <div class="section-head">
+      <p class="section-label" id="heatmap-heading">Heatmap</p>
+      <h2>Department &times; role hotspots</h2>
+    </div>
+    <app-heatmap-insights></app-heatmap-insights>
+  </section>
+
+  <section class="dash-section" aria-labelledby="distributions-heading">
+    <div class="section-head">
+      <p class="section-label" id="distributions-heading">Distributions</p>
+      <h2>Who the workforce is</h2>
+    </div>
+    <app-distributions></app-distributions>
+  </section>
+
+  <section class="dash-section" aria-labelledby="action-heading">
+    <div class="section-head">
+      <p class="section-label" id="action-heading">Action first</p>
+      <h2>Where HR should act first</h2>
+    </div>
+    <app-action-table></app-action-table>
+  </section>
+</div>

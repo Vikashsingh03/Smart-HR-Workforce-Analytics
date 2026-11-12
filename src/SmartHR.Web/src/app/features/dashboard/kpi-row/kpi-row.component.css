@@ -1,0 +1,259 @@
+/* KPI row — four cards with count-up values, sparklines and honest delta lines.
+   Warm paper, hairline borders, deep teal accent. No gradients, no glass.
+   v3: 24px padding rhythm, hairline border + one soft shadow per card,
+   larger/tighter count-up values with tabular numerals, refined labels,
+   deltas and icon chips. */
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .kpi-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px 24px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.kpi-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Colour pass: each card its own soft solid tint + 3px coloured top border.
+   Card order: total = teal, attrition = brick, departments = slate,
+   income = amber. No gradients. */
+.kpi-card.kpi-total {
+  background: #e6f0ed;
+  border-top: 3px solid #0e5e54;
+}
+
+.kpi-card.kpi-attrition {
+  background: #f7e8e5;
+  border-top: 3px solid #a83226;
+}
+
+.kpi-card.kpi-departments {
+  background: #edeff1;
+  border-top: 3px solid #5b6b7a;
+}
+
+.kpi-card.kpi-income {
+  background: #f7efe0;
+  border-top: 3px solid #9a6a14;
+}
+
+/* Per-card label colour, matching the card's accent. */
+.kpi-card.kpi-total .kpi-label {
+  color: #0e5e54;
+}
+
+.kpi-card.kpi-attrition .kpi-label {
+  color: #a83226;
+}
+
+.kpi-card.kpi-departments .kpi-label {
+  color: #5b6b7a;
+}
+
+.kpi-card.kpi-income .kpi-label {
+  color: #9a6a14;
+}
+
+.kpi-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kpi-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* Coloured icon chip: solid accent square, white icon. */
+.kpi-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: #ffffff;
+  flex: 0 0 auto;
+}
+
+.kpi-card.kpi-total .kpi-icon {
+  background: #0e5e54;
+}
+
+.kpi-card.kpi-attrition .kpi-icon {
+  background: #a83226;
+}
+
+.kpi-card.kpi-departments .kpi-icon {
+  background: #5b6b7a;
+}
+
+.kpi-card.kpi-income .kpi-icon {
+  background: #9a6a14;
+}
+
+.kpi-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.kpi-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.kpi-spark {
+  flex: 0 0 96px;
+  width: 96px;
+  height: 36px;
+  display: block;
+  min-width: 0;
+  margin-bottom: 2px;
+}
+
+.kpi-caption {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.kpi-delta {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.kpi-delta strong {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.kpi-delta strong.danger {
+  color: var(--danger);
+}
+
+/* Loading skeleton — opacity pulse only, no gradient shimmer. */
+.kpi-skeleton {
+  pointer-events: none;
+}
+
+.sk {
+  background: var(--surface-2);
+  border-radius: 4px;
+  animation: kpi-pulse 1.2s ease-in-out infinite;
+}
+
+.sk-label {
+  width: 45%;
+  height: 11px;
+}
+
+.sk-value {
+  width: 60%;
+  height: 32px;
+  margin-top: 14px;
+}
+
+.sk-delta {
+  width: 85%;
+  height: 12px;
+  margin-top: 16px;
+}
+
+@keyframes kpi-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* Error state — hairline card with a danger left border, plain text. */
+.kpi-error {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--danger);
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kpi-error p {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.kpi-retry {
+  flex: 0 0 auto;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.kpi-retry:hover {
+  background: var(--accent-soft, rgba(14, 94, 84, 0.08));
+  border-color: var(--accent);
+}
+
+.kpi-retry:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

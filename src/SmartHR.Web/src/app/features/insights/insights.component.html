@@ -1,0 +1,68 @@
+<app-page-header
+  title="Insights"
+  subtitle="Ranked findings from the live HR data — what matters most, and what to do first."
+></app-page-header>
+
+<div *ngIf="loading" class="loading-block">
+  <app-skeleton [lines]="5"></app-skeleton>
+  <p class="loading-text">Loading findings…</p>
+</div>
+
+<div *ngIf="!loading && loadError" class="error-block">
+  <app-error-banner [message]="loadError"></app-error-banner>
+  <button type="button" class="btn" (click)="load()">Try again</button>
+</div>
+
+<div *ngIf="!loading && !loadError">
+  <p class="count-line">
+    {{ findings.length }} findings · ranked by severity, then by attrition rate · all figures from
+    the live API
+  </p>
+
+  <p class="empty-text" *ngIf="findings.length === 0">
+    No findings could be computed from the data.
+  </p>
+
+  <article class="finding" *ngFor="let f of findings; trackBy: trackById">
+    <div class="finding-rank" aria-hidden="true">{{ f.rankLabel }}</div>
+    <div class="finding-main">
+      <div class="finding-top">
+        <h2>{{ f.title }}</h2>
+        <app-badge class="finding-badge" [text]="severityLabel(f)" [tone]="severityTone(f)"></app-badge>
+      </div>
+
+      <div class="finding-stat">
+        <span class="finding-headline">{{ f.headline }}</span>
+        <span class="finding-headline-label">{{ f.headlineLabel }}</span>
+      </div>
+
+      <p class="finding-numbers">{{ f.numbers }}</p>
+      <p class="finding-explanation">{{ f.explanation }}</p>
+      <p class="finding-source">Source: {{ f.source }}</p>
+
+      <button
+        type="button"
+        class="btn btn-primary btn-ai"
+        (click)="explainFinding(f)"
+        [disabled]="f.aiState === 'loading'"
+      >
+        {{
+          f.aiState === 'loading'
+            ? 'Explaining…'
+            : f.aiState === 'done'
+              ? 'Explain again'
+              : 'Explain with AI'
+        }}
+      </button>
+
+      <div class="ai-result" *ngIf="f.aiState === 'done' && f.aiResult">
+        <p class="ai-label">{{ aiSourceLabel(f) }}</p>
+        <p>{{ f.aiResult.explanation }}</p>
+        <p class="ai-action">
+          <strong>Suggested action:</strong> {{ f.aiResult.action }}
+        </p>
+      </div>
+      <p class="ai-error" *ngIf="f.aiState === 'error'">{{ f.aiError }}</p>
+    </div>
+  </article>
+</div>

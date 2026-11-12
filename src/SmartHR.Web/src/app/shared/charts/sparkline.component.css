@@ -1,0 +1,18 @@
+/* Sparkline wrapper: the canvas fills the fixed-height box.
+   Chart.js runs with maintainAspectRatio: false, so it sizes to this
+   wrapper — the height input on <app-sparkline> is the single control.
+   v3: flex-centred so the line sits vertically centred in its KPI card
+   slot instead of top-anchored. Stroke width/colour live in the
+   component's Chart.js config (TS, not owned here). */
+.spark-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.spark-wrap canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}

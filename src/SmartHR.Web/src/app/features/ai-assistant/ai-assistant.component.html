@@ -1,0 +1,102 @@
+<section class="ai-page">
+  <header class="page-head">
+    <p class="section-label">AI Assistant</p>
+    <h1>Ask the data in plain English</h1>
+    <p class="lede">Type a question about attrition, overtime, roles, satisfaction, tenure or income. The assistant turns it into one SQL query and shows the result.</p>
+    <div class="guardrail" role="note">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="16" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+      </svg>
+      <p>The assistant can only read data. It never changes anything, and it only writes SELECT queries.</p>
+    </div>
+  </header>
+
+  <div class="history-head" *ngIf="entries.length > 0">
+    <h2>Conversation</h2>
+    <span class="history-count">{{ entries.length }} {{ entries.length === 1 ? 'question' : 'questions' }}</span>
+    <button type="button" class="btn-ghost" (click)="clearHistory()">Clear conversation</button>
+  </div>
+
+  <div class="history">
+    <div class="empty-history card" *ngIf="entries.length === 0">
+      <p>No questions yet. Ask one below, or try an example.</p>
+    </div>
+
+    <article class="turn" *ngFor="let entry of entries; trackBy: trackById">
+      <div class="question-bubble">
+        <p>{{ entry.question }}</p>
+      </div>
+
+      <div class="answer-card card" aria-live="polite">
+        <p class="pending-text" *ngIf="entry.pending">Asking…</p>
+
+        <ng-container *ngIf="!entry.pending">
+          <div class="error-banner" *ngIf="entry.error" role="alert">{{ entry.error }}</div>
+
+          <ng-container *ngIf="!entry.error && entry.result as res">
+            <div class="result-head">
+              <h3>Answer</h3>
+              <span class="source-label">{{ sourceLabel(entry) }}</span>
+            </div>
+
+            <div class="error-banner" *ngIf="res.blockedReason" role="alert">
+              <p>{{ res.blockedReason }}</p>
+              <p>Try one of the example questions, or ask about a department, overtime, a job role, satisfaction, tenure, income, or where HR should act first.</p>
+            </div>
+
+            <ng-container *ngIf="!res.blockedReason">
+              <div class="sql-block" *ngIf="res.sql">
+                <div class="sql-head">
+                  <span class="field-label">Generated SQL</span>
+                  <button type="button" class="btn-ghost" (click)="copySql(entry)">{{ entry.copied ? 'Copied' : 'Copy SQL' }}</button>
+                </div>
+                <pre><code>{{ res.sql }}</code></pre>
+              </div>
+
+              <p class="row-note">{{ rowCountNote(entry) }}</p>
+              <div class="table-wrap" *ngIf="displayedRows(entry).length > 0">
+                <table>
+                  <thead>
+                    <tr>
+                      <th *ngFor="let col of res.columns" [class.num]="isColumnNumeric(entry, col)">{{ col }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of displayedRows(entry)">
+                      <td *ngFor="let col of res.columns" [class.num]="isNumeric(row[col])">{{ formatCell(row[col]) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="empty-note" *ngIf="displayedRows(entry).length === 0">The query ran but returned no rows.</p>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </article>
+  </div>
+
+  <div class="card ask-card">
+    <label class="field-label" for="question">Ask in plain English</label>
+    <textarea
+      id="question"
+      #questionBox
+      rows="3"
+      [(ngModel)]="question"
+      (keydown.control.enter)="ask()"
+      placeholder="e.g. Attrition rate by department?"></textarea>
+    <div class="examples">
+      <span class="examples-label">Try:</span>
+      <button type="button" class="chip" *ngFor="let q of exampleQuestions" (click)="useExample(q)">{{ q }}</button>
+    </div>
+    <div class="ask-actions">
+      <button type="button" class="btn-primary" [disabled]="!canAsk" (click)="ask()">
+        {{ loading ? 'Asking…' : 'Ask' }}
+      </button>
+      <span class="loading-text" *ngIf="loading">Asking…</span>
+      <span class="hint" *ngIf="!loading">Press Ctrl+Enter to ask.</span>
+    </div>
+  </div>
+</section>

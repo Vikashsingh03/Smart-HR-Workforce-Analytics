@@ -1,0 +1,104 @@
+<section class="employees-page">
+  <app-page-header
+    title="Employee directory"
+    subtitle="Browse every employee in the sample. Search by employee number, job role or department — click a row for the full profile."
+  ></app-page-header>
+
+  <app-employee-filters
+    [initialFilters]="initialFiltersSeed"
+    [exportDisabled]="loading || exporting"
+    (filtersChanged)="onFiltersChange($event)"
+    (exportRequested)="exportCsv()"
+  ></app-employee-filters>
+
+  <p class="result-count" aria-live="polite">
+    <ng-container *ngIf="!loading"><span class="result-count-num">{{ total | number }}</span> {{ total === 1 ? 'employee' : 'employees' }}</ng-container>
+    <ng-container *ngIf="loading">Loading…</ng-container>
+  </p>
+
+  <p class="filter-note" *ngIf="hasClientFilters && serverTotal > 100">
+    Role, attrition, income and tenure filters run on the first 100 matching
+    employees loaded from the API — narrow the search or department to see more.
+  </p>
+
+  <app-error-banner *ngIf="error" [message]="error"></app-error-banner>
+  <div class="retry-row" *ngIf="error">
+    <button type="button" class="btn" (click)="retry()">Try again</button>
+  </div>
+
+  <app-skeleton *ngIf="loading && displayedEmployees.length === 0" [lines]="8"></app-skeleton>
+
+  <app-empty-state
+    *ngIf="!loading && !error && displayedEmployees.length === 0"
+    message="No employees match this search. Clear the filter."
+    actionLabel="Clear filter"
+    (actionClick)="clearFilters()"
+  ></app-empty-state>
+
+  <div class="table-wrap" *ngIf="!error && displayedEmployees.length > 0">
+    <table class="employees-table">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            *ngFor="let col of columns"
+            [class.num]="col.numeric"
+            [attr.aria-sort]="ariaSort(col.key)"
+          >
+            <button type="button" class="sort-btn" (click)="toggleSort(col.key)">
+              {{ col.label }}
+              <span class="sort-ind" *ngIf="sortKey === col.key" aria-hidden="true">{{
+                sortDir === 'asc' ? '▲' : '▼'
+              }}</span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let employee of displayedEmployees; trackBy: trackByEmployee"
+          (click)="openDrawer(employee)"
+          (keydown.enter)="openDrawer(employee)"
+          tabindex="0"
+          [class.selected]="selectedEmployeeNumber === employee.employeeNumber"
+        >
+          <td class="num">{{ employee.employeeNumber }}</td>
+          <td class="num">{{ employee.age }}</td>
+          <td>{{ employee.gender }}</td>
+          <td>{{ employee.department }}</td>
+          <td>{{ employee.jobRole }}</td>
+          <td class="num">${{ employee.monthlyIncome | number: '1.0-0' }}</td>
+          <td class="num">{{ employee.yearsAtCompany }}</td>
+          <td>
+            <app-badge *ngIf="employee.attrition === 1" tone="danger">Left</app-badge>
+            <app-badge *ngIf="employee.attrition !== 1" tone="neutral">Stayed</app-badge>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination" *ngIf="!error && total > 0">
+    <p class="page-info">
+      Page {{ page }} of {{ totalPages }} &middot; {{ total | number }} employees in total
+    </p>
+    <div class="page-buttons">
+      <button type="button" class="btn" (click)="prevPage()" [disabled]="page <= 1 || loading">
+        Previous
+      </button>
+      <button
+        type="button"
+        class="btn"
+        (click)="nextPage()"
+        [disabled]="page >= totalPages || loading"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+
+  <app-employee-drawer
+    [employeeNumber]="selectedEmployeeNumber"
+    (closed)="onDrawerClosed()"
+  ></app-employee-drawer>
+</section>

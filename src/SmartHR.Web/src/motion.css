@@ -1,0 +1,119 @@
+/* Motion tokens and utilities — Smart HR Workforce Analytics (UI v3).
+   Loaded globally (A1 adds this file to the angular.json styles array,
+   after styles.css). Subtle motion only: KPI count-up (see the appCountUp
+   directive), 150-200ms ease hovers, opacity-pulse skeletons.
+   No bounce, no slide-ins, no gradients, no spinners. */
+
+:root {
+  --motion-fast: 150ms;
+  --motion-med: 200ms;
+  --motion-count-up: 600ms;
+  --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Skeleton / loading pulse — opacity only, NO gradient shimmer.       */
+/* Matches the v1 skeleton's sk-pulse timing (1.4s ease-in-out,        */
+/* opacity 1 -> 0.45 -> 1) so A2 can consolidate on this one class.    */
+/* Apply to any neutral loading block: <div class="motion-pulse"></div> */
+/* ------------------------------------------------------------------ */
+.motion-pulse {
+  animation: motion-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes motion-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hover transitions — colour/border only, never layout or transform.  */
+/* Use on cards, rows and buttons that change on hover.                */
+/* ------------------------------------------------------------------ */
+.motion-hover {
+  transition:
+    background-color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease);
+}
+
+/* ------------------------------------------------------------------ */
+/* Interactive elements — hover transition plus one consistent focus   */
+/* treatment (2px accent outline, 2px offset), matching styles.css,    */
+/* plus a subtle press state (1px down) for buttons.                   */
+/* ------------------------------------------------------------------ */
+.motion-interactive {
+  transition:
+    background-color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-med) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease);
+}
+
+.motion-interactive:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.motion-interactive:active {
+  transform: translateY(1px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Press state — standalone utility for buttons that do not use        */
+/* .motion-interactive. A 1px press only; nothing flashy.              */
+/* ------------------------------------------------------------------ */
+.motion-press {
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.motion-press:active {
+  transform: translateY(1px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Fade — opacity-only appearance transition for surfaces that show    */
+/* and hide (dropdowns, tooltips). No slide, no scale.                 */
+/* ------------------------------------------------------------------ */
+.motion-fade {
+  transition: opacity var(--motion-med) var(--motion-ease);
+}
+
+/* ------------------------------------------------------------------ */
+/* Count-up values — tabular numerals so figures do not wobble while   */
+/* they animate. Apply alongside [appCountUp].                         */
+/* ------------------------------------------------------------------ */
+.motion-count-up {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion — honour the user's system setting everywhere this    */
+/* file is responsible for: no pulse, no transitions, no press shift.   */
+/* The count-up directive checks the same media query in JS and jumps  */
+/* to the final value.                                                 */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .motion-pulse {
+    animation: none;
+  }
+
+  .motion-hover,
+  .motion-interactive,
+  .motion-press,
+  .motion-fade {
+    transition: none;
+  }
+
+  .motion-interactive:active,
+  .motion-press:active {
+    transform: none;
+  }
+}

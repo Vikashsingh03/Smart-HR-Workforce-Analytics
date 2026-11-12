@@ -1,0 +1,57 @@
+<section class="kpi-row" aria-label="Workforce overview">
+  <ng-container *ngIf="loading; else loaded">
+    <div class="kpi-card kpi-skeleton" *ngFor="let i of [0, 1, 2, 3]" aria-hidden="true">
+      <div class="sk sk-label"></div>
+      <div class="sk sk-value"></div>
+      <div class="sk sk-delta"></div>
+    </div>
+  </ng-container>
+
+  <ng-template #loaded>
+    <div class="kpi-error" *ngIf="error; else cardsTpl" role="alert">
+      <p>Could not load the workforce overview. Check that the API is running and try again.</p>
+      <button type="button" class="kpi-retry" (click)="load()">Try again</button>
+    </div>
+
+    <ng-template #cardsTpl>
+      <article class="kpi-card" [ngClass]="'kpi-' + card.id" *ngFor="let card of cards">
+        <header class="kpi-head">
+          <span class="kpi-label">{{ card.label }}</span>
+          <span class="kpi-icon" aria-hidden="true">
+            <svg *ngIf="card.id === 'total'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="8" r="3.5" />
+              <path d="M2.5 19c.8-3.2 3.4-5 6.5-5s5.7 1.8 6.5 5" />
+              <circle cx="17" cy="9" r="2.5" />
+              <path d="M16 14.6c2.6.3 4.7 1.9 5.5 4.4" />
+            </svg>
+            <svg *ngIf="card.id === 'attrition'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7l6 6 4-4 8 8" />
+              <path d="M21 13v6h-6" />
+            </svg>
+            <svg *ngIf="card.id === 'departments'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="8" height="8" rx="1" />
+              <rect x="13" y="3" width="8" height="8" rx="1" />
+              <rect x="3" y="13" width="8" height="8" rx="1" />
+              <rect x="13" y="13" width="8" height="8" rx="1" />
+            </svg>
+            <svg *ngIf="card.id === 'income'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2.5" y="6" width="19" height="12" rx="2" />
+              <circle cx="12" cy="12" r="3" />
+              <path d="M5.5 9.5h.01" />
+              <path d="M18.5 14.5h.01" />
+            </svg>
+          </span>
+        </header>
+
+        <div class="kpi-main">
+          <span class="kpi-value"><span class="kpi-prefix" *ngIf="card.prefix">{{ card.prefix }}</span><span [appCountUp]="card.value" [appCountUpDecimals]="card.decimals">{{ card.display }}</span><span class="kpi-suffix" *ngIf="card.suffix">{{ card.suffix }}</span></span>
+          <app-sparkline class="kpi-spark" [data]="card.spark"></app-sparkline>
+        </div>
+
+        <p class="kpi-caption">{{ card.sparkCaption }}</p>
+
+        <p class="kpi-delta"><ng-container *ngFor="let part of card.delta"><strong *ngIf="part.strong; else plainText" [class.danger]="part.danger">{{ part.text }}</strong><ng-template #plainText>{{ part.text }}</ng-template></ng-container></p>
+      </article>
+    </ng-template>
+  </ng-template>
+</section>

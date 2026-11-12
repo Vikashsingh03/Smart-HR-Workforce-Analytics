@@ -1,0 +1,176 @@
+<section class="charts-dept" aria-label="Department charts">
+  @if (loading) {
+    <app-skeleton [lines]="6"></app-skeleton>
+  }
+
+  @if (error) {
+    <app-error-banner [message]="error"></app-error-banner>
+  }
+
+  @if (!loading && !error) {
+    <div class="charts-dept-grid">
+      <!-- Q1 — Attrition by department: horizontal bars with value labels. -->
+      <article class="chart-card accent-teal">
+        <p class="chart-q">Q1</p>
+        <h2>Attrition by department</h2>
+        @if (deptBars.length) {
+          <div class="hbars" role="list" aria-label="Attrition rate by department">
+            @for (row of deptBars; track row.label) {
+              <div
+                class="hbar-row"
+                role="listitem"
+                [attr.aria-label]="
+                  row.label + ': ' + (row.rate | number: '1.1-1') + ' percent attrition'
+                "
+              >
+                <span class="hbar-label">{{ row.label }}</span>
+                <span class="hbar-track" aria-hidden="true">
+                  <span class="hbar-fill" [style.width.%]="row.width"></span>
+                </span>
+                <span class="hbar-value num">{{ row.rate | number: '1.1-1' }}%</span>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty">No department data was returned.</p>
+        }
+        <p class="takeaway">{{ takeawayQ1 }}</p>
+        <div class="ai-area">
+          <button
+            class="btn"
+            type="button"
+            (click)="explain('dept')"
+            [disabled]="aiState('dept').loading"
+          >
+            {{ aiState('dept').loading ? 'Explaining…' : 'Explain with AI' }}
+          </button>
+          @if (aiState('dept').result; as result) {
+            <div class="ai-result">
+              <p class="ai-source">
+                {{ result.source === 'gemini' ? 'AI explanation' : 'Rule-based summary' }}
+              </p>
+              <p>{{ result.explanation }}</p>
+              <p class="ai-action">
+                <strong>Suggested action:</strong> {{ result.action }}
+              </p>
+            </div>
+          }
+          @if (aiState('dept').error) {
+            <p class="ai-error">{{ aiState('dept').error }}</p>
+          }
+        </div>
+      </article>
+
+      <!-- Q2 — Overtime: comparative bars plus leaver-composition doughnut. -->
+      <article class="chart-card accent-amber">
+        <p class="chart-q">Q2</p>
+        <h2>Overtime and attrition</h2>
+        <div class="duo-grid">
+          <div class="duo-cell">
+            <p class="chart-sub">Attrition rate</p>
+            <app-base-chart
+              type="bar"
+              [labels]="overtimeBarLabels"
+              [datasets]="overtimeBarDatasets"
+              [height]="220"
+            ></app-base-chart>
+          </div>
+          <div class="duo-cell">
+            <p class="chart-sub">Who left</p>
+            <app-base-chart
+              type="doughnut"
+              [labels]="doughnutLabels"
+              [datasets]="doughnutDatasets"
+              [height]="220"
+            ></app-base-chart>
+          </div>
+        </div>
+        <p class="takeaway">{{ takeawayQ2 }}</p>
+        <div class="ai-area">
+          <button
+            class="btn"
+            type="button"
+            (click)="explain('overtime')"
+            [disabled]="aiState('overtime').loading"
+          >
+            {{ aiState('overtime').loading ? 'Explaining…' : 'Explain with AI' }}
+          </button>
+          @if (aiState('overtime').result; as result) {
+            <div class="ai-result">
+              <p class="ai-source">
+                {{ result.source === 'gemini' ? 'AI explanation' : 'Rule-based summary' }}
+              </p>
+              <p>{{ result.explanation }}</p>
+              <p class="ai-action">
+                <strong>Suggested action:</strong> {{ result.action }}
+              </p>
+            </div>
+          }
+          @if (aiState('overtime').error) {
+            <p class="ai-error">{{ aiState('overtime').error }}</p>
+          }
+        </div>
+      </article>
+
+      <!-- Q3 — Attrition by job role: horizontal bars, top 9, with headcount labels. -->
+      <article class="chart-card chart-card-wide accent-brick">
+        <p class="chart-q">Q3</p>
+        <h2>Attrition by job role</h2>
+        @if (roleBars.length) {
+          <div class="hbars" role="list" aria-label="Attrition rate by job role, top 9">
+            @for (row of roleBars; track row.label) {
+              <div
+                class="hbar-row"
+                role="listitem"
+                [attr.aria-label]="
+                  row.label +
+                  ': ' +
+                  (row.rate | number: '1.1-1') +
+                  ' percent attrition, ' +
+                  row.left +
+                  ' of ' +
+                  row.total +
+                  ' left'
+                "
+              >
+                <span class="hbar-label">{{ row.label }}</span>
+                <span class="hbar-track" aria-hidden="true">
+                  <span class="hbar-fill" [style.width.%]="row.width"></span>
+                </span>
+                <span class="hbar-value num">{{ row.rate | number: '1.1-1' }}%</span>
+                <span class="hbar-count">{{ row.total }} people</span>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty">No job role data was returned.</p>
+        }
+        <p class="takeaway">{{ takeawayQ3 }}</p>
+        <div class="ai-area">
+          <button
+            class="btn"
+            type="button"
+            (click)="explain('role')"
+            [disabled]="aiState('role').loading"
+          >
+            {{ aiState('role').loading ? 'Explaining…' : 'Explain with AI' }}
+          </button>
+          @if (aiState('role').result; as result) {
+            <div class="ai-result">
+              <p class="ai-source">
+                {{ result.source === 'gemini' ? 'AI explanation' : 'Rule-based summary' }}
+              </p>
+              <p>{{ result.explanation }}</p>
+              <p class="ai-action">
+                <strong>Suggested action:</strong> {{ result.action }}
+              </p>
+            </div>
+          }
+          @if (aiState('role').error) {
+            <p class="ai-error">{{ aiState('role').error }}</p>
+          }
+        </div>
+      </article>
+    </div>
+  }
+</section>

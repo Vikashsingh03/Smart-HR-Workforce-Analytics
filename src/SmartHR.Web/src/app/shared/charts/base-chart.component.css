@@ -1,0 +1,17 @@
+/* Base chart wrapper: the canvas fills the fixed-height box.
+   Chart.js runs with maintainAspectRatio: false, so it sizes to this
+   wrapper — the height input on <app-base-chart> is the single control.
+   v3: a touch of breathing room so value labels and axis text never sit
+   hard against the card edges. Bar colours, legend and doughnut centre
+   treatment live in chart-theme.ts (owned by another builder). */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  padding: 2px 2px 0;
+}
+
+.chart-wrap canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
