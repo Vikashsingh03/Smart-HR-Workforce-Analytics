@@ -32,7 +32,17 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod());
 });
 
-builder.WebHost.UseUrls("http://localhost:5000");
+builder.WebHost.UseUrls(GetListenUrls());
+
+static string GetListenUrls()
+{
+    // Render (and other hosts) assign a dynamic port via $PORT and need 0.0.0.0.
+    // Locally, keep the usual http://localhost:5000.
+    var port = Environment.GetEnvironmentVariable("PORT");
+    return string.IsNullOrWhiteSpace(port)
+        ? "http://localhost:5000"
+        : $"http://0.0.0.0:{port}";
+}
 
 var app = builder.Build();
 

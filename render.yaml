@@ -1,0 +1,23 @@
+# Render Blueprint — SmartHR API (free tier).
+# Deploy: Render dashboard → New → Blueprint → pick the Smart-HR-Workforce-Analytics repo.
+# Render will ask for GEMINI_API_KEY on first deploy (sync: false) — paste it there, never in chat.
+# After the Vercel frontend is live, add one more env var on the Render service:
+#   AllowedOrigins__0 = https://<your-vercel-app>.vercel.app
+# (that triggers a redeploy and lets the live site call the API; until then the API
+# only allows http://localhost:4200, per the code's CORS default).
+services:
+  - type: web
+    name: smarthr-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Database__Provider
+        value: Sqlite
+      - key: ConnectionStrings__Sqlite
+        value: Data Source=/app/smarthr.db
+      - key: GEMINI_API_KEY
+        sync: false

@@ -25,7 +25,13 @@
                   "type": "anyComponentStyle"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production",
@@ -67,8 +73,5 @@
       "sourceRoot": "src"
     }
   },
-  "version": 1,
-  "cli": {
-    "analytics": "1ca0c615-6191-4f44-b26a-7f74f6832038"
-  }
+  "version": 1
 }
