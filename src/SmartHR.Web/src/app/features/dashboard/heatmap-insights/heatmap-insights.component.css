@@ -5,7 +5,15 @@
 
 .heatmap-insights {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
+}
+
+/* Grid items must be allowed to shrink below their content (the heatmap
+   table's min-content is ~970px wide) — otherwise the implicit auto track
+   stretches the card to the table width and the whole page overflows. */
+.heatmap-insights > * {
+  min-width: 0;
 }
 
 .card {
@@ -207,6 +215,13 @@
     border-color 150ms ease,
     color 150ms ease,
     background-color 150ms ease;
+}
+
+/* Small phones: narrower card padding so heatmap and findings breathe. */
+@media (max-width: 560px) {
+  .card {
+    padding: 20px;
+  }
 }
 
 .btn:hover {

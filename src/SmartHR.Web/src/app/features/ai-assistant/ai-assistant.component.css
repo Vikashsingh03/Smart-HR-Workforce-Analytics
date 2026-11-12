@@ -414,3 +414,15 @@
   color: var(--ink-2);
   margin: 4px 0 0;
 }
+
+/* Small phones: result header and ask actions wrap instead of squeezing. */
+@media (max-width: 640px) {
+  .result-head {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ask-actions {
+    flex-wrap: wrap;
+  }
+}

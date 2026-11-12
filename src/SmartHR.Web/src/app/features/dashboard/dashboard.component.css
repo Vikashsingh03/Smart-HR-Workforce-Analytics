@@ -94,3 +94,19 @@
     font-size: 19px;
   }
 }
+
+/* Small phones: give the content room to breathe — narrower card padding
+   so text doesn't feel squeezed, headings stay large and legible. */
+@media (max-width: 640px) {
+  .dashboard {
+    gap: 20px;
+  }
+
+  .page-intro {
+    padding: 20px 16px;
+  }
+
+  .page-intro-text {
+    font-size: 14px;
+  }
+}

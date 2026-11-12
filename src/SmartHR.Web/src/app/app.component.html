@@ -2,7 +2,7 @@
   <div class="sidebar-backdrop" (click)="closeSidebar()" aria-hidden="true"></div>
 
   <aside class="sidebar" aria-label="Primary">
-    <a class="brand" routerLink="/">
+    <a class="brand" routerLink="/" (click)="closeSidebar()">
       <span class="brand-mark" aria-hidden="true">HR</span>
       <span class="brand-text">
         <span class="brand-title">Smart HR</span>
@@ -13,23 +13,23 @@
     <p class="section-label">Analytics</p>
 
     <nav class="side-nav" aria-label="Analytics">
-      <a class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" title="Dashboard">
+      <a class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()" title="Dashboard">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
         <span class="nav-label">Dashboard</span>
       </a>
-      <a class="nav-item" routerLink="/employees" routerLinkActive="active" title="Employees">
+      <a class="nav-item" routerLink="/employees" routerLinkActive="active" (click)="closeSidebar()" title="Employees">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M17 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span class="nav-label">Employees</span>
       </a>
-      <a class="nav-item" routerLink="/ai" routerLinkActive="active" title="AI Assistant">
+      <a class="nav-item" routerLink="/ai" routerLinkActive="active" (click)="closeSidebar()" title="AI Assistant">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8z"/></svg>
         <span class="nav-label">AI Assistant</span>
       </a>
-      <a class="nav-item" routerLink="/insights" routerLinkActive="active" title="Insights">
+      <a class="nav-item" routerLink="/insights" routerLinkActive="active" (click)="closeSidebar()" title="Insights">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         <span class="nav-label">Insights</span>
       </a>
-      <a class="nav-item" routerLink="/reports" routerLinkActive="active" title="Reports">
+      <a class="nav-item" routerLink="/reports" routerLinkActive="active" (click)="closeSidebar()" title="Reports">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         <span class="nav-label">Reports</span>
       </a>

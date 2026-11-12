@@ -67,5 +67,8 @@
       "sourceRoot": "src"
     }
   },
-  "version": 1
+  "version": 1,
+  "cli": {
+    "analytics": "1ca0c615-6191-4f44-b26a-7f74f6832038"
+  }
 }

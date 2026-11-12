@@ -163,6 +163,13 @@
 
 @media (max-width: 960px) {
   .charts-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Small phones: narrower card padding so chart content breathes. */
+@media (max-width: 560px) {
+  .chart-card {
+    padding: 20px;
   }
 }

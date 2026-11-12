@@ -257,6 +257,15 @@ app-page-header {
     font-size: 16px;
   }
 
+  /* Title row wraps so the badge drops below instead of squeezing the title. */
+  .finding-top {
+    flex-wrap: wrap;
+  }
+
+  .finding-top h2 {
+    min-width: 0;
+  }
+
   .finding-headline {
     font-size: 26px;
   }

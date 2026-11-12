@@ -246,7 +246,7 @@
 
 @media (max-width: 960px) {
   .charts-dept-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .chart-card-wide {
@@ -255,8 +255,12 @@
 }
 
 @media (max-width: 560px) {
+  .chart-card {
+    padding: 20px;
+  }
+
   .duo-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .duo-cell + .duo-cell {

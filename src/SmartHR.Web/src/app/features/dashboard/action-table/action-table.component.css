@@ -243,3 +243,11 @@
     width: 100%;
   }
 }
+
+/* Small phones: full-width filter select so the toolbar doesn't squeeze. */
+@media (max-width: 560px) {
+  .select {
+    min-width: 0;
+    width: 100%;
+  }
+}

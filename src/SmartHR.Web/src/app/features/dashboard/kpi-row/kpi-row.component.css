@@ -20,6 +20,12 @@
   .kpi-row {
     grid-template-columns: 1fr;
   }
+
+  /* Small phones: narrower card padding so the value, sparkline and
+     delta text breathe instead of feeling squeezed. Values stay 32px. */
+  .kpi-card {
+    padding: 20px;
+  }
 }
 
 .kpi-card {

@@ -120,3 +120,15 @@
     display: none;
   }
 }
+
+/* Small phones: narrower strip padding and a wrapping header so the
+   Print button drops below the label instead of squeezing the text. */
+@media (max-width: 640px) {
+  .exec-summary {
+    padding: 20px 16px;
+  }
+
+  .exec-head {
+    flex-wrap: wrap;
+  }
+}
